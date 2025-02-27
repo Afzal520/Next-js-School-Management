@@ -1,0 +1,86 @@
+
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { FaUserGraduate, FaChalkboardTeacher, FaBuilding, FaBook, FaFileInvoice, FaCog, FaBars, FaThLarge } from 'react-icons/fa';
+import { MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { Outlet } from "react-router-dom"
+export const Sidebar = () => {
+    const [isOpen, setIsOpen] = useState(true);
+    const [openDropdown, setOpenDropdown] = useState(null);
+    const [openStudentDropdown, setOpenStudentDropdown] = useState(null)
+    const [opneTeacherDropdown, setopenTeacherDropdown] = useState(null)
+
+    return (
+        <div className={`h-screen bg-white shadow-lg ${isOpen ? 'w-56' : 'w-20'} transition-all duration-300`}>
+            <div className="p-4 flex items-center justify-between border-b">
+                <h1 className={`text-lg font-bold transition-all ${isOpen ? 'block' : 'hidden'}`}>SCHOOL</h1>
+                <FaBars className="cursor-pointer" onClick={() => setIsOpen(!isOpen)} />
+            </div>
+            <nav className="p-4">
+                <ul className="space-y-2">
+                    <li>
+                        <button className="flex items-center w-full p-2 rounded-lg hover:bg-gray-200" onClick={() => setOpenDropdown(!openDropdown)}>
+                            <FaThLarge className="mr-3" />
+                            {isOpen && <span>Dashboard</span>}
+                            {isOpen && (openDropdown ? <MdExpandLess className="ml-auto" /> : <MdExpandMore className="ml-auto" />)}
+                        </button>
+                        {openDropdown && isOpen && (
+                            <ul className="pl-8 mt-1 space-y-1">
+                                <Link href={"/"} className="p-2 bg-blue-500 block text-white rounded-lg">Admin Dashboard</Link>
+                                <Link href={"/dashboard/teacher"} className="p-2 block hover:bg-gray-200 rounded-lg">Teacher Dashboard</Link>
+                                <Link href={"/dashboard/student"} className="p-2 block hover:bg-gray-200 rounded-lg">Student Dashboard</Link>
+                            </ul>
+                        )}
+                    </li>
+                    <li>
+                        <button onClick={() => setOpenStudentDropdown(!openStudentDropdown)} className="flex items-center w-full p-2 rounded-lg hover:bg-gray-200">
+                            <FaUserGraduate className="mr-3" /> {isOpen && <span className='font-bold'>Students</span>}
+                        </button>
+
+                        {openStudentDropdown && isOpen && (
+                            <ul className='mt-1'>
+                                <Link href={"/student/studentAdd"} className='p-2 block bg-blue-500 text-white rounded-lg'>Add Student</Link>
+
+                                <Link href={"/student/studentList"} className='p-2 block hover:bg-blue-200  rounded-lg'>List Student</Link>
+
+
+                            </ul>
+
+                        )}
+
+                    </li>
+                    <li>
+                        <button onClick={() => setopenTeacherDropdown(!opneTeacherDropdown)} className="flex items-center w-full p-2 rounded-lg hover:bg-gray-200">
+                            <FaChalkboardTeacher className="mr-3 " /> {isOpen && <span className='font-bold'>Teachers</span>}
+                        </button>
+                        {opneTeacherDropdown && opneTeacherDropdown && (
+                            <ul className='mt-1'>
+                                <li className='p-2 bg-blue-500 text-white rounded-lg'>Add Teacher</li>
+                                <li className='p-2 hover:bg-blue-200  rounded-lg'>Edit Teacher</li>
+                                <li className='p-2 hover:bg-blue-200  rounded-lg'>Details Teacher</li>
+                            </ul>
+                        )}
+                    </li>
+
+                    <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <FaBuilding className="mr-3" /> {isOpen && <span>Departments</span>}
+                    </li>
+                    <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <FaBook className="mr-3" /> {isOpen && <span>Subjects</span>}
+                    </li>
+                    <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <FaFileInvoice className="mr-3" /> {isOpen && <span>Invoices</span>}
+                    </li>
+                    <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <FaCog className="mr-3" /> {isOpen && <span>Settings</span>}
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+    );
+};
+
+
