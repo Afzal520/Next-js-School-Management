@@ -5,10 +5,12 @@ export default function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [fullName, setFullName] = useState("")
+    
     const formData = {
         fullName,
         email,
-        password
+        password,
+        role:"admin"
     }
     const handleSubmit = async (e) => {
         e.preventDefault()

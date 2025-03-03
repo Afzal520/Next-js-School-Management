@@ -9,8 +9,7 @@ export default async function Login(email, password) {
             if (!email || !password) {
                 return
             }
-            console.log("email",email)
-            console.log("password",password)
+          
             const user = await Authenication.findOne({ email })
             console.log(user)
             if (!user) {
@@ -31,6 +30,7 @@ export default async function Login(email, password) {
                     _id: user._id,
                     fullName: user.fullName,
                     email: user.email,
+                    role:user.role
                 },
             }
         } catch (error) {

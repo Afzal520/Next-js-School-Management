@@ -1,15 +1,52 @@
-
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { useState, useEffect } from "react";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
+export default function AdminLayout({ studentList, teacherList, studentAttendance, teacherAttendance }) {
+  const [student, setStudent] = useState(studentList);
+  const [teacher, setTeacher] = useState(teacherList);
+  const [sAttendance, setStudentAttendance] = useState(studentAttendance);
+  const [tAttendance, setTeacherAttendance] = useState(teacherAttendance);
 
-export default function AdminLayout() {
+  const getAttendanceCounts = (attendanceData) => {
+    const counts = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
+    attendanceData.forEach((record) => {
+      const day = new Date(record.date).toLocaleString("en-US", { weekday: "short" });
+      if (counts[day] !== undefined && record.status === "Present") {
+        counts[day]++;
+      }
+    });
+    return Object.values(counts);
+  };
+
+  const getMonthlyGenderCounts = (attendanceData) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const counts = months.map(() => ({ boys: 0, girls: 0 }));
+    console.log(counts)
+    attendanceData.forEach((record) => {
+      const month = new Date(record.date).getMonth();
+      if (record.gender === "Male" && record.status === "Present") {
+        counts[month].boys++;
+      } else if (record.gender === "Female" && record.status === "Present") {
+        counts[month].girls++;
+      }
+    });
+
+    return counts;
+  };
+
+  const studentAttendanceCounts = getAttendanceCounts(sAttendance);
+  const teacherAttendanceCounts = getAttendanceCounts(tAttendance);
+  const monthlyGenderCounts = getMonthlyGenderCounts(sAttendance);
+
+
+  const boyData = monthlyGenderCounts.map((count) => count.boys);
+  const girlData = monthlyGenderCounts.map((count) => count.girls);
+
   return (
     <div className="flex">
-
-
       <div className="p-6 flex-grow bg-gray-100 min-h-screen">
         {/* Top Navigation */}
         <div className="flex justify-between items-center bg-white p-4 shadow rounded-lg">
@@ -20,9 +57,9 @@ export default function AdminLayout() {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
           {[
-            { title: "Students", value: "50,055", icon: "🎓" },
+            { title: "Students", value: `${student.length}`, icon: "🎓" },
             { title: "Awards", value: "50+", icon: "🏆" },
-            { title: "Department", value: "30+", icon: "🏢" },
+            { title: "Teacher", value: `${teacher.length}`, icon: "🏢" },
             { title: "Revenue", value: "$505", icon: "💰" },
           ].map((item, index) => (
             <div key={index} className="bg-white p-6 rounded-lg shadow text-center">
@@ -37,20 +74,20 @@ export default function AdminLayout() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {/* Line Chart */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold">Overview</h3>
+            <h3 className="text-lg font-semibold">Attendance</h3>
             <Line
               data={{
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                 datasets: [
                   {
                     label: "Teachers",
-                    data: [40, 50, 70, 60, 50, 55, 45],
+                    data: teacherAttendanceCounts,
                     borderColor: "#6366F1",
                     fill: false,
                   },
                   {
                     label: "Students",
-                    data: [30, 40, 60, 50, 40, 60, 50],
+                    data: studentAttendanceCounts,
                     borderColor: "#10B981",
                     fill: false,
                   },
@@ -64,16 +101,16 @@ export default function AdminLayout() {
             <h3 className="text-lg font-semibold">Number of Students</h3>
             <Bar
               data={{
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [
                   {
                     label: "Boys",
-                    data: [400, 500, 600, 550, 530, 580, 600],
+                    data: boyData,
                     backgroundColor: "#6366F1",
                   },
                   {
                     label: "Girls",
-                    data: [300, 450, 500, 520, 500, 550, 590],
+                    data: girlData,
                     backgroundColor: "#10B981",
                   },
                 ],
@@ -82,7 +119,6 @@ export default function AdminLayout() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

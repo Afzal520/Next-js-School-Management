@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const MONGODB_URL = process.env.MONGODB_URL
-console.log(MONGODB_URL, "heelooo")
+
 if (!MONGODB_URL) {
     throw new Error(
         "Please define the MONGODB_URI  .env"
@@ -18,7 +18,7 @@ async function connectToDB() {
     }
     if (!cached.promise) {
         cached.promise = mongoose.connect(MONGODB_URL).then((mongoose) => {
-
+      console.log("DB Connected Successfully ")
             return mongoose;
         });
     }

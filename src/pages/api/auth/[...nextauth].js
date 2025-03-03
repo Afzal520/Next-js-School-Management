@@ -19,6 +19,7 @@ export default NextAuth({
                         id: result.user._id.toString(),
                         email: result.user.email,
                         name: result.user.fullName,
+                        role:result.user.role
                     };
                 } else {
                     throw new Error(result.message || "Invalid credentials");
@@ -34,11 +35,12 @@ export default NextAuth({
     },
     callbacks: {
         async jwt({ token, user }) {
-;
+
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
+                token.role = user.role
             }
             return token;
         },
@@ -47,6 +49,7 @@ export default NextAuth({
             session.user.id = token.id;
             session.user.email = token.email;
             session.user.name = token.name;
+            session.user.role = token.role
             return session;
         },
     },

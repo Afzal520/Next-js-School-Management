@@ -6,22 +6,24 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import TeacherLogin from "../popup/teacherLogin";
 
-export default function DetailsStudent() {
-    const [student, setStudent] = useState(null)
+export default function DetailTeacher() {
+    const [teacher, setTeacher] = useState(null)
     const [isLoading, setLoading] = useState(true)
-
+    const [toggleLogin ,setToggleLogin] = useState(false)
+console.log(teacher)
     const router = useRouter()
     const { id } = router.query
     console.log(id)
     useEffect(() => {
         const fetchData = async () => {
             if (id) {
-                const response = await fetch(`/api/studentRegister?id=${id}`, {
+                const response = await fetch(`/api/teacherRegister?id=${id}`, {
                     method: "GET",
                 });
                 const result = await response.json();
-                setStudent(result.StudentDetails)
+                setTeacher(result.teacherDetails)
                 setLoading(false)
                 console.log(result);
             }
@@ -32,8 +34,8 @@ export default function DetailsStudent() {
         return <div>Loading studentDetails .......</div>
     }
   
-    const handleDetail =()=>{
-       router.push(`/student/studentEdit?id=${id}`)
+    const handleDetails = () => {
+        router.push(`/teacher/teacherEdit?id=${id}`)
     }
     return (
         <div>
@@ -42,7 +44,7 @@ export default function DetailsStudent() {
                 <div className="flex justify-evenly items-end">
                     <div className="h-32 w-32 bg-yellow-400 rounded-full"></div>
                     <div className="">
-                        <p className="font-bold">{student?.fullName}  {student?.lastName}</p>
+                        <p className="font-bold">{teacher?.fullName}</p>
                         <p className="text-gray-400">Computer Science</p>
                     </div>
 
@@ -56,7 +58,8 @@ export default function DetailsStudent() {
                     <div className="flex justify-between gap-4">
                         <button className="bg-blue-800 rounded text-white p-2 px-4">Message </button>
                         <button className="bg-blue-500 text-white rounded p-2 px-4">Follow</button>
-                        <button onClick={(handleDetail)} className="bg-blue-500 text-white rounded p-2 px-4">Edit Details</button>
+                        <button onClick={(handleDetails)} className="bg-blue-500 text-white rounded p-2 px-4">Edit Details</button>
+                        <button onClick={()=>setToggleLogin(true)}>Add Login Details</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +72,7 @@ export default function DetailsStudent() {
                                 <p className="text-blue-400"><IoPeopleSharp /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Name</p>
-                                    <p className="block text-gray-400">{student?.fullName} {student?.lastName}</p>
+                                    <p className="block text-gray-400">{teacher?.fullName} </p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
@@ -79,25 +82,25 @@ export default function DetailsStudent() {
                                     <p className="block text-gray-400">Computer Science</p>
                                 </div>
                             </div>
-                            <div className="flex gap-2 md-2">
+                            {/* <div className="flex gap-2 md-2">
                                 <p className="text-blue-400"><FcDepartment /> </p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Religion</p>
                                     <p className="block text-gray-400">{student?.religion}</p>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="flex gap-2 md-2">
                                 <p className="text-blue-400"><FaPhoneAlt /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Mobile</p>
-                                    <p className="block text-gray-400">{student?.mobile}</p>
+                                    <p className="block text-gray-400">{teacher?.mobile}</p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
                                 <p className="text-blue-400"><MdOutlineMail /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">E-mail</p>
-                                    <p className="block text-blue-500">{student.email}</p>
+                                    <p className="block text-blue-500">{teacher?.email}</p>
                                 </div>
                             </div>
 
@@ -106,14 +109,14 @@ export default function DetailsStudent() {
                                 <p className="text-blue-400">  <IoPeopleSharp /> </p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Gender</p>
-                                    <p className="block text-gray-400">{student?.gender}</p>
+                                    <p className="block text-gray-400">{teacher?.gender}</p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
                                 <p className="text-bule-400"><MdDateRange /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Date of Birth</p>
-                                    <p className="block text-gray-400">{student?.dob}</p>
+                                    <p className="block text-gray-400">{teacher?.dob}</p>
                                 </div>
                             </div>
 
@@ -128,7 +131,7 @@ export default function DetailsStudent() {
                     <div className="p-4 flex flex-col">
                         <p>About Me</p>
                         <div>
-                            <h2 className="font-bold ">Hello I , {student?.fullName}</h2>
+                            <h2 className="font-bold ">Hello I , {teacher?.fullName}</h2>
                             <p className="text-gray-400">
                                 lorem lorem   lorem lorem Layout jnhdwhuhACBIYET7 HSGDXBYT ABXFD ZFSRu6r jazbu6trtu
                                 lorem lorem   lorem lorem Layout jnhdwhuhACBIYET7 HSGDXBYT ABXFD ZFSRu6r jazbu6trtu
@@ -153,6 +156,7 @@ export default function DetailsStudent() {
                         </div>
                     </div>
                 </div>
+                {toggleLogin && <TeacherLogin/>}
             </div>
         </div>
     )

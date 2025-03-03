@@ -12,7 +12,7 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Authenication",
         required: true,
-      },
+    },
     gender: {
         type: String,
         enum: ["Male", "Female"],

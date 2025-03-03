@@ -1,11 +1,21 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Default styles for the calendar
-import { Line, Pie } from "react-chartjs-2";
+
 import { IoMdTime } from "react-icons/io";
 import { IoBookOutline } from "react-icons/io5";
 import { FaTv } from "react-icons/fa";
-export default function StudentLayout() {
+import { Line, Pie, Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, ArcElement, LineElement, BarElement, Title, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, ArcElement, LineElement, BarElement, Title, Tooltip, Legend);
+
+
+export default function StudentLayout({attendance}) {
+   console.log(attendance)
+
+   const filterDailyPresent = attendance.filter((list)=>list.status === "Present")
+   const filterPracticalPresent =attendance.filter((list)=>list.attendanceType ==="Practical")
     const [date, setDate] = useState(new Date())
     const data = {
         labels: ['Complete', 'Remaining'],
@@ -70,8 +80,9 @@ export default function StudentLayout() {
                     <div className="">
                         <div className="flex h-32 p-5   rounded shadow-lg bg-white justify-between gap-4 items-center">
                             <div>
-                                <p className="text-gray-500 font-medium text-xl">All Course</p>
-                                <p className="text-2xl">  04/06</p>
+                                <p className=" font-medium text-xl">Total Class</p>
+                                <p className="text-gray-400">Weekly</p>
+                                <p className="text-2xl">  00/06</p>
                             </div>
                             <p className="text-4xl">🎓</p>
                         </div>
@@ -79,8 +90,9 @@ export default function StudentLayout() {
                     <div className="">
                         <div className="flex h-32 p-5   rounded shadow-lg bg-white justify-between gap-4 items-center">
                             <div>
-                                <p className="text-gray-500 font-medium text-xl">All Course</p>
-                                <p className="text-2xl">  04/06</p>
+                                <p className="text-gray-500 font-medium text-xl">Daily Attendance</p>
+                                <p className="text-gray-400">Daily</p>
+                                <p className="text-2xl">  {filterDailyPresent.length}/180</p>
                             </div>
                             <p className="text-4xl">🎓</p>
                         </div>
@@ -88,8 +100,9 @@ export default function StudentLayout() {
                     <div className="">
                         <div className="flex h-32 p-5   rounded shadow-lg bg-white justify-between gap-4 items-center">
                             <div>
-                                <p className="text-gray-500 font-medium text-xl">All Course</p>
-                                <p className="text-2xl">  04/06</p>
+                                <p className="text-gray-500 font-medium text-xl">Test Passed</p>
+                                <p className="text-gray-400">Unit Test</p>
+                                <p className="text-2xl">  130/160</p> 
                             </div>
                             <p className="text-4xl">🎓</p>
                         </div>
@@ -97,8 +110,9 @@ export default function StudentLayout() {
                     <div className="">
                         <div className="flex h-32 p-5   rounded shadow-lg bg-white justify-between gap-4 items-center">
                             <div>
-                                <p className="text-gray-500 font-medium text-xl">All Course</p>
-                                <p className="text-2xl">  04/06</p>
+                                <p className="text-gray-500 font-medium text-xl">Practical</p>
+                                <p className="text-gray-400">Semester</p>
+                                <p className="text-2xl"> {filterPracticalPresent.length || "0"}/180</p>
                             </div>
                             <p className="text-4xl">🎓</p>
                         </div>

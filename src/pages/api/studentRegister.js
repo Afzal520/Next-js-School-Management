@@ -10,8 +10,7 @@ export default async function handler(req, res) {
         return json.status(405).json({ success: false, message: "Unauthorized Person" })
     }
     const adminId = token.id
-    console.log(adminId)
-    console.log(token)
+
     if (req.method === "POST") {
         try {
             const { email, roll, className, bloodGroup, mobile, section, religion, admissionId, gender, dob, fullName, lastName } = req.body

@@ -58,12 +58,13 @@ const options = {
     animation: true,
 };
 
-export default function TeacherLayout() {
+export default function TeacherLayout({teacher}) {
+    console.log(teacher)
     const [date, setDate] = useState(new Date())
     return (
         <div className="h-auto bg-gray-200 p-2">
             <div className="flex justify-between items-center bg-white p-2 shadow rounded-lg">
-                <h2 className="text-xl font-semibold">Welcome Zack!</h2>
+                <h2 className="text-xl font-semibold">Welcome {teacher?.fullName}!</h2>
                 <input type="text" placeholder="Search here" className="border p-2 rounded-lg" />
             </div>
             {/* <div className="flex justify-between">
@@ -91,7 +92,7 @@ export default function TeacherLayout() {
                 </div>
                 <div className="h-32 p-5 flex justify-between items-center rounded shadow-lg bg-white">
                     <div>
-                        <p className="text-gray-500 font-medium text-xl">Total Lesson</p>
+                        <p className="text-gray-500 font-medium text-xl">Total Unit</p>
                         <p className="font-bold text-xl">04/16</p>
                     </div>
                     <div>
@@ -101,7 +102,7 @@ export default function TeacherLayout() {
                 <div className="h-32 p-5 flex justify-between items-center rounded shadow-lg bg-white">
                     <div>
                         <p className="text-gray-500 font-medium text-xl">Total Hours</p>
-                        <p className="font-bold text-xl">04/16</p>
+                        <p className="font-bold text-xl">00/5</p>
                     </div>
                     <div>
                         <p className="text-4xl">🏢</p>

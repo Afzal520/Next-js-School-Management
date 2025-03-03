@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaBuilding, FaBook, FaFileInvoice, FaCog, FaBars, FaThLarge } from 'react-icons/fa';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Outlet } from "react-router-dom"
-export const Sidebar = () => {
+export const Sidebar = ({ session }) => {
+  
     const [isOpen, setIsOpen] = useState(true);
     const [openDropdown, setOpenDropdown] = useState(null);
     const [openStudentDropdown, setOpenStudentDropdown] = useState(null)
@@ -27,7 +28,7 @@ export const Sidebar = () => {
                         </button>
                         {openDropdown && isOpen && (
                             <ul className="pl-8 mt-1 space-y-1">
-                                <Link href={"/"} className="p-2 bg-blue-500 block text-white rounded-lg">Admin Dashboard</Link>
+                                {session?.user?.role === "teacher" ? null : (<Link href={"/"} className="p-2 bg-blue-500 block text-white rounded-lg">Admin Dashboard</Link>)}
                                 <Link href={"/dashboard/teacher"} className="p-2 block hover:bg-gray-200 rounded-lg">Teacher Dashboard</Link>
                                 <Link href={"/dashboard/student"} className="p-2 block hover:bg-gray-200 rounded-lg">Student Dashboard</Link>
                             </ul>
@@ -40,29 +41,29 @@ export const Sidebar = () => {
 
                         {openStudentDropdown && isOpen && (
                             <ul className='mt-1'>
-                                <Link href={"/student/studentAdd"} className='p-2 block bg-blue-500 text-white rounded-lg'>Add Student</Link>
-
+                                <Link href={"/student/studentAdd"} className='p-2 block  rounded-lg'>Add Student</Link>
                                 <Link href={"/student/studentList"} className='p-2 block hover:bg-blue-200  rounded-lg'>List Student</Link>
-
+                                <Link href={"/attendance/studentAttendance"} className='p-2 block hover:bg-blue-200  rounded-lg'>Attendance</Link>
 
                             </ul>
 
                         )}
 
                     </li>
-                    <li>
+                    {session?.user?.role === "teacher" ? null : (<li>
                         <button onClick={() => setopenTeacherDropdown(!opneTeacherDropdown)} className="flex items-center w-full p-2 rounded-lg hover:bg-gray-200">
                             <FaChalkboardTeacher className="mr-3 " /> {isOpen && <span className='font-bold'>Teachers</span>}
                         </button>
                         {opneTeacherDropdown && opneTeacherDropdown && (
                             <ul className='mt-1'>
-                                <li className='p-2 bg-blue-500 text-white rounded-lg'>Add Teacher</li>
-                                <li className='p-2 hover:bg-blue-200  rounded-lg'>Edit Teacher</li>
-                                <li className='p-2 hover:bg-blue-200  rounded-lg'>Details Teacher</li>
+                                <Link href={"/teacher/teacherAdd"} className='p-2 block rounded-lg'>Add Teacher</Link>
+                                <Link href={"/teacher/teacherList"} className='p-2 block hover:bg-blue-200  rounded-lg'>ListTeacher </Link>
+                                <Link href={"/attendance/teacherAttendance"} className='p-2 block hover:bg-blue-200  rounded-lg'>Attendance </Link>
+                                <Link href={"/teacher/teacherTask"} className='p-2 block hover:bg-blue-200  rounded-lg'> Add Task</Link>
                             </ul>
                         )}
                     </li>
-
+                    )}
                     <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
                         <FaBuilding className="mr-3" /> {isOpen && <span>Departments</span>}
                     </li>
