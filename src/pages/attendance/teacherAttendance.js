@@ -68,13 +68,13 @@ export default function TeacherAttendence({ teacherList }) {
                                 <div className="flex space-x-2">
                                     <button
                                         className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-                                        onClick={() => handleStatusChange(teacher._id, "Present", teacher.fullName, teacher.gender)}
+                                        onClick={() => handleStatusChange(teacher.teacherId, "Present", teacher.fullName, teacher.gender)}
                                     >
                                         Present
                                     </button>
                                     <button
                                         className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-                                        onClick={() => handleStatusChange(teacher._id, "Absent", teacher.fullName, teacher.gender)}
+                                        onClick={() => handleStatusChange(teacher.teacherId, "Absent", teacher.fullName, teacher.gender)}
                                     >
                                         Absent
                                     </button>

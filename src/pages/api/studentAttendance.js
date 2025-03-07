@@ -8,11 +8,10 @@ export default async function handler(req, res) {
         const { studentId, fullName, status, date, gender, attendanceType } = req.body;
 
         try {
-            let existedData = await StudentAttendance.findOne({ studentId });
+            let existedData = await StudentAttendance.findOne({ studentId, date });
 
             if (existedData) {
                 existedData.status = status;
-                existedData.date = date;
                 existedData.attendanceType = attendanceType;
                 await existedData.save();
                 return res.status(202).json({ success: true, message: 'Status Updated' });
@@ -25,7 +24,6 @@ export default async function handler(req, res) {
                     gender,
                     attendanceType,
                 });
-              
 
                 await newAttendance.save();
                 return res.status(201).json({ success: true, message: 'Attendance Recorded' });
