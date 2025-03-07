@@ -59,7 +59,7 @@ export const Sidebar = ({ session }) => {
                                 <Link href={"/teacher/teacherAdd"} className='p-2 block rounded-lg'>Add Teacher</Link>
                                 <Link href={"/teacher/teacherList"} className='p-2 block hover:bg-blue-200  rounded-lg'>ListTeacher </Link>
                                 <Link href={"/attendance/teacherAttendance"} className='p-2 block hover:bg-blue-200  rounded-lg'>Attendance </Link>
-                                <Link href={"/teacher/teacherTask"} className='p-2 block hover:bg-blue-200  rounded-lg'> Add Task</Link>
+                              
                             </ul>
                         )}
                     </li>
@@ -70,9 +70,9 @@ export const Sidebar = ({ session }) => {
                     <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
                         <FaBook className="mr-3" /> {isOpen && <span>Subjects</span>}
                     </li>
-                    <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
-                        <FaFileInvoice className="mr-3" /> {isOpen && <span>Invoices</span>}
-                    </li>
+                    <Link href={"/payment"} className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <FaFileInvoice className="mr-3" /> {isOpen && <span>Fee</span>}
+                    </Link>
                     <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
                         <FaCog className="mr-3" /> {isOpen && <span>Settings</span>}
                     </li>
