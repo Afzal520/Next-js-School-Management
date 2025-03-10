@@ -31,7 +31,21 @@ export default async function handler(req, res) {
         } catch (error) {
             return res.status(500).json({ success: false, message: 'Server Error', error: error.message });
         }
-    } else {
+
+    }
+    else if (req.method == "GET") {
+        const { id } = req.query
+        try {
+            const existedData = await StudentAttendance.find({ studentId: id })
+            if (!existedData) {
+                return res.status(404).json({ success: false, message: "Data Not Found" })
+            }
+            res.status(200).json({ success: true, message: "Attendance Detail Get Successfully", existedData })
+        } catch (error) {
+            res.status(500).json({ success: false, message: "Server Error", error: error.message })
+        }
+    }
+    else {
         return res.status(405).json({ success: false, message: 'Method Not Allowed' });
     }
 }

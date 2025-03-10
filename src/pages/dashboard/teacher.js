@@ -144,8 +144,9 @@ console.log(teacherId)
 
   return (
     <Layout>
-      <div className="h-auto bg-gray-200 p-2">
-        <div className="flex justify-between items-center bg-white p-2 shadow rounded-lg">
+      <div className=' mt-14  bg-gray-200'>
+      <div className="h-auto   p-2">
+        <div className="flex justify-between  items-center bg-white p-2 shadow rounded-lg">
           <h2 className="text-xl font-semibold">Welcome {filteredTeacher[0]?.fullName || "Teacher not found"}!</h2>
           <input onChange={(e) => setSearchQuery(e.target.value)} type="text" placeholder="Search here" className="border p-2 rounded-lg" />
         </div>
@@ -311,6 +312,8 @@ console.log(teacherId)
           </div>
         </div>
       </div>
+      </div>
+    
     </Layout>
   );
 }

@@ -71,7 +71,7 @@ export default function Student({ attendance }) {
     return (
 
         <Layout>
-           <div className="flex">
+           <div className="flex mt-14">
             <div className="flex-grow h-auto bg-gray-300 p-2">
                 <div className="flex justify-between items-center bg-white p-4 shadow rounded-lg">
                     <h2 className="text-xl font-semibold">Welcome Zack !</h2>

@@ -10,6 +10,7 @@ import { StudentAttendance, TeacherAttendance } from "@/modal/attendance";
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
@@ -57,12 +58,15 @@ export default function Home({ studentList, teacherList, teacherAttendance, stud
 
   return (
     <Layout>
-     <div className="flex">
+     <div className="flex mt-11">
       <div className="p-6 flex-grow bg-gray-100 min-h-screen">
         {/* Top Navigation */}
         <div className="flex justify-between items-center bg-white p-4 shadow rounded-lg">
           <h2 className="text-xl font-semibold">Welcome Admin!</h2>
-          <input type="text" placeholder="Search here" className="border p-2 rounded-lg" />
+          <div className="flex gap-2">
+            <p>Home / </p>
+            <Link href={"/"} className="text-blue-400 cursor-pointer" >Admin</Link>
+          </div>
         </div>
 
         {/* Stats Cards */}

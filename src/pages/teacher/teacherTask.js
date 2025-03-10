@@ -2,6 +2,7 @@ import { getSession } from "next-auth/react";
 import Layout from "../dashboard/layout";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function TeacherTask() {
     const router = useRouter()
@@ -9,32 +10,40 @@ export default function TeacherTask() {
     const [totalClass, setTotalClass] = useState("")
     const [totalUnit, setTotalUnit] = useState("")
     const [startDate, setStartDate] = useState("")
-    const {id}  = router.query
-// const currentDate = new Date().toISOString().split("T")[0]
+    const { id } = router.query
+    // const currentDate = new Date().toISOString().split("T")[0]
     const formData = {
         subject,
         totalUnit,
         totalClass,
         startDate,
-       
-        teacherId :id
+        teacherId: id
     }
+    
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const response = await fetch("/api/teacherTask", {
-            method: "POST",
-            headers: {
-                "Content-Type": "Application/json"
-            },
-            body: JSON.stringify(formData)
-        })
-        const result = await response.json()
-        console.log(result)
+        try {
+            const response = await fetch("/api/teacherTask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            const result = await response.json()
+            if (result.success) {
+                toast.success(result.message)
+            }
+            else {
+                toast.error(result.message)
+            }
+        } catch (error) {
+           toast.error(error)
+        }
     }
     return (
         <Layout>
-
-            <div>
+            <div className="mt-[70px]">
                 <h1>Add Teacher</h1>
                 <div className=" bg-white shadow h-auto p-6">
 
@@ -58,20 +67,13 @@ export default function TeacherTask() {
                                 <label htmlFor="exp">start Data</label>
                                 <input onChange={(e) => setStartDate(e.target.value)} required type="date" className="p-2 px-4 border border-blue-400 rounded" placeholder="Start Date" />
                             </div>
-
                         </div>
                         <div className="flex ">
-
-
                             <div className="mt-4"><button className="border text-white rounded p-2 px-6 bg-blue-700">Submit</button></div>
-
                         </div>
-
                     </form>
                 </div>
-
             </div>
-
         </Layout>
     )
 }
