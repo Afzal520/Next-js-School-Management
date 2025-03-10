@@ -3,8 +3,7 @@ import { useSession } from "next-auth/react";
 
 export default function Layout({ children }) {
   const {data: session,status} = useSession()
-  console.log(status)
-  console.log(session)
+ 
   return (
     <div className="flex">
       <Sidebar session={session} />

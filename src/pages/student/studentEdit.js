@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { getSession } from "next-auth/react"
+import { toast } from "react-toastify";
 
 export default function StudentEdit({ studentList }) {
     const [student, setStudent] = useState("");
@@ -41,13 +42,25 @@ export default function StudentEdit({ studentList }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (id) {
-                const response = await fetch(`/api/studentRegister?id=${id}`, {
-                    method: "GET",
-                });
-                const result = await response.json();
-                setStudent(result.StudentDetails);
-                setLoading(false);
+            try {
+                if (id) {
+                    const response = await fetch(`/api/studentRegister?id=${id}`, {
+                        method: "GET",
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        setStudent(result.StudentDetails);
+                        setLoading(false);
+                        toast.success(result.message)
+                    }
+                    else {
+                        toast.error(result.error)
+                    }
+
+                }
+            } catch (error) {
+                toast.error(error)
+                console.log("Something went wrong", error);
             }
         };
         fetchData();
@@ -72,7 +85,7 @@ export default function StudentEdit({ studentList }) {
     console.log(student)
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(id)
+       
         try {
             if (id) {
                 const response = await fetch(`/api/studentRegister?id=${id}`, {
@@ -83,7 +96,12 @@ export default function StudentEdit({ studentList }) {
                     body: JSON.stringify(formData),
                 });
                 const result = await response.json();
-                console.log(result);
+                if (result.success) {
+                    toast.success(result.message)
+                }
+                else {
+                    toast.error(result.message)
+                }
             }
         } catch (error) {
             console.log("Something went wrong", error);
@@ -95,7 +113,7 @@ export default function StudentEdit({ studentList }) {
     }
     return (
         <Layout>
-            <div>
+            <div className="mt-[70px]">
                 <h1>Edit Student</h1>
                 <div className="bg-white shadow h-screen p-6">
                     <h2 className="font-bold text-2xl">Student Information</h2>

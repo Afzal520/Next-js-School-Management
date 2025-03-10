@@ -3,6 +3,7 @@ import Layout from "../dashboard/layout";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify";
 
 
 export default function EditTeacher() {
@@ -27,7 +28,7 @@ export default function EditTeacher() {
             })
             const result = await response.json()
             setLoading(false)
-            setTeacher(result.teacherDetails)
+
 
         }
         fetchData()
@@ -71,9 +72,15 @@ export default function EditTeacher() {
                 body: JSON.stringify(formData)
             })
             const result = await response.json()
-            console.log(result)
+            if (result.success) {
+                toast.success(result.message)
+                setLoading(false)
+            }
+            else {
+                toast.error(result.message)
+            }
         } catch (error) {
-
+            toast.error(error)
         }
     }
     if (isLoading) {
@@ -81,8 +88,9 @@ export default function EditTeacher() {
     }
     return (
         <Layout>
+           
+            <div className=" mt-[70px] bg-white shadow h-auto p-6">
             <h1>Edit Teacher</h1>
-            <div className=" bg-white shadow h-auto p-6">
                 <h2 className="font-bold text-2xl">Teacher Information Update</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-3">
@@ -165,18 +173,18 @@ export default function EditTeacher() {
         </Layout>
     )
 }
-export async function getServerSideProps(context){
+export async function getServerSideProps(context) {
     const session = await getSession(context)
-    if(!session){
-        return{
-            redirect:{
-                destination:"/login",
-                permanent:false
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/login",
+                permanent: false
             }
         }
     }
-    return{
-        props:{}
+    return {
+        props: {}
     }
 }
 

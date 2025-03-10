@@ -8,8 +8,9 @@ export default async function handler(req, res) {
         try {
             const { fullName, gender, joiningDate, email, dob, mobile, experience, qualification } = req.body
             const auth= await Authenication.findOne({email})
-             console.log(auth,"AUTH")
-      
+            if(!auth){
+                return res.status(404).json({success:false,message:"Login Email Not Match"})
+            }
             const existedTeacher = await Teacher.findOne({ email })
             if (existedTeacher) {
                 return res.status(404).json({ success: true, message: "Teacher Already Existed" })

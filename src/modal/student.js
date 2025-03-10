@@ -22,8 +22,8 @@ const studentSchema = new mongoose.Schema({
     roll: { type: String, required: true },
     admissionId: { type: String },
     bloodGroup: { type: String },
-    className: { type: String }
-
+    className: { type: String },
+    image:{type:String}
 
 }, { timestamps: true })
 

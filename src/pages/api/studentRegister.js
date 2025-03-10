@@ -1,7 +1,7 @@
 import connectToDB from "@/config/mongoose";
 import Student from "@/modal/student"
 import { getToken } from "next-auth/jwt";
-
+import cloudinary from "@/config/cloudinary";
 
 export default async function handler(req, res) {
     await connectToDB();
@@ -34,6 +34,19 @@ export default async function handler(req, res) {
 
             })
             await newStudent.save()
+            // if (req.file) {
+            //     try {
+            //         const result = await cloudinary.uploader.upload(req.file.path, {
+            //             folder: "profile_photos",
+            //         });
+
+            //         newStudent.image = result.secure_url;
+            //         await newStudent.save();
+            //     } catch (cloudinaryError) {
+            //         console.error("Cloudinary upload error:", cloudinaryError);
+            //         return res.status(500).json({ success: false, message: "Cloudinary upload failed", error: cloudinaryError.message });
+            //     }
+            // }
             res.status(201).json({ success: true, message: "Student register Successfully" })
         } catch (error) {
             res.status(500).json({ success: false, message: "Server Error", error: error.message })
@@ -72,7 +85,7 @@ export default async function handler(req, res) {
                 mobile,
                 section,
                 religion,
-              
+
             } = req.body
             const studentDetails = await Student.findById(id)
 
@@ -92,7 +105,7 @@ export default async function handler(req, res) {
                 mobile,
                 section,
                 religion,
-              
+
             }
             await Student.findByIdAndUpdate(studentDetails._id, updateStudent)
             return res.json({ success: true, message: "Student Information  Update Successfull" })

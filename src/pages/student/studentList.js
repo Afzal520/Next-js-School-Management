@@ -9,20 +9,45 @@ import { FaDownload } from "react-icons/fa";
 import { FaArrowsUpDown } from "react-icons/fa6";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
+import { useSwipeable } from "react-swipeable"
+import Pagination from "@mui/material/Pagination"
+import { downloadExcel } from "@/utils/downloadReport";
 
 export default function StudentList({ student }) {
     const [studentList, setStudentList] = useState(student)
     const [searchQuery, setNameSearchQuery] = useState("")
+     const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20; // Set items per page to a reasonable number
     const router = useRouter()
     const handleStudentDeatil = (id) => {
         router.push(`/student/studentDetails?id=${id}`)
     }
     const studentFilter = studentList.filter((list) => list.fullName.toLowerCase().includes(searchQuery.toLowerCase()))
-    console.log(studentFilter)
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => {
+            setCurrentPage((prev) =>
+                prev < Math.ceil(studentFilter.length / itemsPerPage) ? prev + 1 : prev
+            );
+        },
+        onSwipedRight: () => {
+            setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+        },
+        trackMouse: true,
+    })
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedData = studentFilter.slice(startIndex, endIndex);
+  const handleDownloadReport= ()=>{
+    downloadExcel(paginatedData)
+  }
     return (
         <Layout>
-            <div>
+            <div className="mt-[70px]">
                 <div className="flex justify-between">
                     <p>Student </p>
                     <p>Home / Student </p>
@@ -47,7 +72,7 @@ export default function StudentList({ student }) {
                     <div>
                         <div className="flex gap-6">  <p className="text-2xl cursor-pointer"><FaBarsStaggered /></p>
 
-                            <p className="text-2xl cursor-pointer"><FaDownload /></p>
+                            <p  onClick={handleDownloadReport}  className="text-2xl cursor-pointer"><FaDownload /></p>
                             <p className="text-2xl cursor-pointer"><FaCirclePlus /></p>
                         </div>
                     </div>
@@ -77,42 +102,53 @@ export default function StudentList({ student }) {
                         </select>
                         <p>Entries</p>
                     </div>
-                    <table className="border-2 w-full">
-                        <thead className="bg-gray-200">
-                            <tr className="p-2">
-                                <th><input type="checkbox" /></th>
-                                <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> ID</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> NAME</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" />CLASS</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" />Father Name</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" />ADDRESS</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" />PHONE</th>
-                            </tr>
-                        </thead>
-                        <tbody className="w-full text-center border">
-                            {studentFilter?.map((list) => {
-                                return (
-                                    <tr onClick={() => handleStudentDeatil(list._id)} className="w-full  cursor-pointer">
-                                        <td>
-                                            <input type="checkbox" />
-                                        </td>
-                                        <td className="">{list?.roll}</td>
-                                        <td className="">
-                                            <div className=" box-border flex gap-1 justify-evenly items-center">
-                                                <p className="w-10 h-10 bg-yellow-400 rounded-full"></p>
-                                                <p>{list?.fullName}</p>
-                                            </div>
+                    <div className="" {...swipeHandlers}>
+                        <table className="border-2 w-full">
+                            <thead className="bg-gray-200">
+                                <tr className="p-2">
+                                    <th><input type="checkbox" /></th>
+                                    <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> ID</th>
+                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> NAME</th>
+                                    <th className="border p-2"> <FaArrowsUpDown className="inline" />CLASS</th>
+                                    <th className="border p-2"> <FaArrowsUpDown className="inline" />Father Name</th>
+                                    <th className="border p-2"> <FaArrowsUpDown className="inline" />ADDRESS</th>
+                                    <th className="border p-2"> <FaArrowsUpDown className="inline" />PHONE</th>
+                                </tr>
+                            </thead>
+                            <tbody className="w-full text-center border">
+                                {paginatedData?.map((list) => {
+                                    return (
+                                        <tr onClick={() => handleStudentDeatil(list._id)} className="w-full  cursor-pointer">
+                                            <td>
+                                                <input type="checkbox" />
+                                            </td>
+                                            <td className="">{list?.roll}</td>
+                                            <td className="">
+                                                <div className=" box-border flex gap-1 justify-evenly items-center">
+                                                    <p className="w-10 h-10 bg-yellow-400 rounded-full"></p>
+                                                    <p>{list?.fullName}</p>
+                                                </div>
 
-                                        </td>
-                                        <td className="border">{list?.className}</td>
-                                        <td className="border">{null}</td>
-                                        <td>Arji Siddharth Nagar</td>
-                                        <td className="border">{list.mobile}</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                            </td>
+                                            <td className="border">{list?.className}</td>
+                                            <td className="border">{"father Name here"}</td>
+                                            <td>Arji Siddharth Nagar</td>
+                                            <td className="border">{list.mobile}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                        <div className="flex justify-center mt-4">
+                            <Pagination
+                                count={Math.ceil(studentFilter.length / itemsPerPage)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                color="primary"
+                            />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </Layout>
@@ -132,7 +168,7 @@ export async function getServerSideProps(context) {
     }
     await connectToDB()
     const student = await Student.find({})
- 
+
 
     return {
         props: { student: JSON.parse(JSON.stringify(student)) }

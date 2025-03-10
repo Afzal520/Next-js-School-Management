@@ -40,7 +40,7 @@ export default function DetailTeacher() {
     }
     return (
         <Layout>
-            <div className="bg-white shadow-lg h-52">
+            <div className="bg-white shadow-lg h-52 mt-[70px]">
                 <div>  <img alt="student bg" /></div>
                 <div className="flex justify-evenly items-end">
                     <div className="h-32 w-32 bg-yellow-400 rounded-full"></div>
