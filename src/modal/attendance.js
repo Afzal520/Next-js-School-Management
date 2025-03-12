@@ -18,6 +18,9 @@ const StudentAttendanceSchema = new mongoose.Schema({
         ref: "Student",
         required: true,
     },
+    fatherName:{type:String},
+    motherName:{type:String},
+    roll:{type:String},
     gender: {
         type: String,
         enum: ["Male", "Female"],

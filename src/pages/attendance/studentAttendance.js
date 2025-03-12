@@ -13,15 +13,19 @@ export default function Attendance({ studentList }) {
 
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 30
-    const handleStatusChange = async (studentId, status, fullName, gender) => {
+    const handleStatusChange = async (studentId, status, fullName, gender ,fatherName, motherName, roll) => {
+
         const date = new Date().toISOString().split("T")[0];
         const formData = {
-            studentId,
+            studentId:studentId,
+            status:status ,
             fullName,
-            status,
-            date,
-            gender,
             attendanceType,
+            gender,
+            fatherName,
+            motherName,
+            roll,
+            date
         };
 
         try {
@@ -45,26 +49,26 @@ export default function Attendance({ studentList }) {
             alert("Error submitting attendance");
         }
     };
-    const handleResultChange =async (studentId, result, fullName, gender) => {
-        const formData = {
-            studentId,
-            result,
-            fullName, gender
-        }
-        try {
-            const response = await fetch("", {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-            const result = await response.json()
-            console.log(result)
-        } catch (error) {
+    // const handleResultChange =async (studentId, result, fullName, gender) => {
+    //     const formData = {
+    //         studentId,
+    //         result,
+    //         fullName, gender
+    //     }
+    //     try {
+    //         const response = await fetch("", {
+    //             method: 'POST',
+    //             headers: {
+    //                 "Content-type": "application/json"
+    //             },
+    //             body: JSON.stringify(formData)
+    //         })
+    //         const result = await response.json()
+    //         console.log(result)
+    //     } catch (error) {
 
-        }
-    }
+    //     }
+    // }
     const filterStudent = studentList.filter((list) =>
         list.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -135,13 +139,13 @@ export default function Attendance({ studentList }) {
                                 <div className="flex space-x-2">
                                     <button
                                         className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-                                        onClick={() => handleStatusChange(student._id, "Present", student.fullName, student.gender)}
+                                        onClick={() => handleStatusChange(student._id, "Present", student.fullName, student.gender, student.fatherName, student.motherName, student.roll)}
                                     >
                                         Present
                                     </button>
                                     <button
                                         className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-                                        onClick={() => handleStatusChange(student._id, "Absent", student.fullName, student.gender)}
+                                        onClick={() => handleStatusChange(student._id, "Present", student.fullName, student.gender, student.fatherName, student.motherName, student.roll)}
                                     >
                                         Absent
                                     </button>
@@ -167,13 +171,13 @@ export default function Attendance({ studentList }) {
                                         className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
                                         onClick={() => handleResultChange(student._id, "Pass", student.fullName, student.gender)}
                                     >
-                                       Pass
+                                        Pass
                                     </button>
                                     <button
                                         className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-                                        onClick={() => handleResultChange(student._id, "Failed", student.fullName, student.gender)}
+                                        onClick={() => handleResultChange(student._id, "Failed", student.fullName, student.fatherName, student.motherName, student.roll, student.gender)}
                                     >
-                                      failed
+                                        failed
                                     </button>
                                 </div>
                             </div>

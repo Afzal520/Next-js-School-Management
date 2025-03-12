@@ -1,7 +1,7 @@
 import connectToDB from "@/config/mongoose";
 import Student from "@/modal/student"
 import { getToken } from "next-auth/jwt";
-import cloudinary from "@/config/cloudinary";
+
 
 export default async function handler(req, res) {
     await connectToDB();
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
         try {
-            const { email, roll, className, bloodGroup, mobile, section, religion, admissionId, gender, dob, fullName, lastName } = req.body
+            const { email,  className, bloodGroup, mobile, section, religion, fatherName,motherName, gender, dob, fullName, lastName } = req.body
             const existedStudent = await Student.findOne({ email })
             if (existedStudent) {
                 return res.status(404).json({ success: false, message: "Student Already exists" })
@@ -24,7 +24,8 @@ export default async function handler(req, res) {
                 gender,
                 dob,
                 email,
-                roll,
+              fatherName,
+              motherName,
                 className,
                 bloodGroup,
                 mobile,
@@ -54,7 +55,7 @@ export default async function handler(req, res) {
     }
     else if (req.method === "GET") {
         const { id } = req.query
-
+         console.log(id,"student id here")
         try {
             if (!id) { return res.status(404).json({ success: false, message: "Student ID Must Provide" }) }
             const StudentDetails = await Student.findOne({ _id: id })
@@ -79,7 +80,8 @@ export default async function handler(req, res) {
                 gender,
                 dob,
                 email,
-                roll,
+                fatherName,
+                motherName,
                 className,
                 bloodGroup,
                 mobile,
@@ -99,7 +101,8 @@ export default async function handler(req, res) {
                 gender,
                 dob,
                 email,
-                roll,
+                fatherName,
+                motherName,
                 className,
                 bloodGroup,
                 mobile,

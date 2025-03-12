@@ -131,7 +131,7 @@ export default function StudentList({ student }) {
 
                                             </td>
                                             <td className="border">{list?.className}</td>
-                                            <td className="border">{"father Name here"}</td>
+                                            <td className="border">{list?.fatherName}</td>
                                             <td>Arji Siddharth Nagar</td>
                                             <td className="border">{list.mobile}</td>
                                         </tr>
