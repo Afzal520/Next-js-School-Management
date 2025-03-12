@@ -9,15 +9,21 @@ import Pagination from "@mui/material/Pagination";
 import { useSwipeable } from "react-swipeable"
 import { FaDownload } from "react-icons/fa";
 import { downloadExcel } from "@/utils/downloadReport";
+import examResult from "@/modal/examResult";
 
-export default function StudentReport({ studentReport }) {
+
+export default function StudentReport({ studentReport, examResult }) {
     const [studentReports, setStudentReport] = useState(studentReport)
+    const [examReports, setExamReports] = useState(examResult)
+
     const [searchQuery, setSearchQuery] = useState("")
     const [reportValue, setReportValue] = useState("Daily")
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 30
-    const filterdaily = studentReports.filter((list) => list.status.toLowerCase().includes(searchQuery.toLowerCase()))
+    const itemsPerPage = 20
+    const filterdaily = studentReports.filter((list) => list.fullName.toLowerCase().includes(searchQuery.toLowerCase()))
+    
     const filterPresent = studentReports.filter((list) => list.attendanceType === reportValue)
+    const filterPass = examReports.filter((list) => list.examStatus.toLowerCase().includes(searchQuery.toLowerCase()))
     const router = useRouter()
     const swipeHandlers = useSwipeable({
         onSwipedLeft: () => {
@@ -38,16 +44,24 @@ export default function StudentReport({ studentReport }) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedData = filterdaily.slice(startIndex, endIndex);
-    const handleDownloadReport= ()=>{
-        downloadExcel(paginatedData)
+    // examReport pagination 
+    const paginatedExamData = filterPass.slice(startIndex, endIndex)
+    const handleDownloadReport = () => {
+        if (reportValue === "Daily") {
+            downloadExcel(paginatedData)
+        }
+        else {
+            downloadExcel(paginatedExamData)
+        }
     }
+
     return (
         <Layout>
             <div>
                 <div className="flex justify-between mt-[70px]">
                     <h1 className="text-center font-bold text-2xl">Students Reports</h1>
                     <div>
-                        <input onChange={(e) => setSearchQuery(e.target.value)} type="search" className="p-2 px-4 border border-gray-500 outline-none rounded" placeholder="Search By Name" />
+                        <input onChange={(e) => setSearchQuery(e.target.value)} type="search" className="p-2 px-4 border border-gray-500 outline-none rounded" placeholder={reportValue == "Daily" ? "Search By Name" : "Search Pass Student"} />
                     </div>
                     <select onChange={(e) => setReportValue(e.target.value)} className="border rounded border-black p-2 px-4">
                         <option selected value={"Daily"}>
@@ -100,10 +114,10 @@ export default function StudentReport({ studentReport }) {
                                     <td className="p-3">{startIndex + i + 1}</td>
                                     <td className="p-3">Photo</td>
                                     <td>{student.fullName}</td>
-                                    <td>{"father Name"}</td>
+                                    <td>{student.fatherName}</td>
                                     <td className="text-green-700 font-semibold">{student.status}</td>
                                     <td>{student.date}</td>
-                                    <td>{"mobile Number"}</td>
+                                    <td>{student.moble}</td>
                                 </tr>
                             </tbody>)}
                         </table>
@@ -159,7 +173,7 @@ export default function StudentReport({ studentReport }) {
                                 <td>{"mobile Number"}</td>
                             </tr>
                         </tbody>)}
-                    </table>) : reportValue === "Pass" ? (<table className="w-full ">
+                    </table>) : reportValue === "Pass" ? (<div {...swipeHandlers}><table className="w-full ">
                         <thead className="bg-gray-200">
                             <tr className="p-2">
                                 <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> SN</th>
@@ -171,16 +185,29 @@ export default function StudentReport({ studentReport }) {
                                 <th className="border p-2"> <FaArrowsUpDown className="inline" /> Phone</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr className="text-center border">
-                                <td className="p-3">P</td>
-                                <td>afzal</td>
-                                <td>Md Aslam</td>
-                                <td className="text-green-700 font-semibold">Pass</td>
-                                <td>9022308370</td>
-                            </tr>
-                        </tbody>
-                    </table>) : reportValue === "failed" ? (<table className="w-full ">
+                        {
+                            paginatedExamData.map((list, i) => <tbody className="cursor-pointer" onClick={()=>router.push(`/report/${list.studentId}`)}>
+                                <tr className="text-center border">
+                                    <td className="p-3">{startIndex + i + 1}</td>
+                                    <td className="p-3">P</td>
+                                    <td>{list?.fullName}</td>
+                                    <td>{list?.fatherName}</td>
+                                    <td className="text-green-700 font-semibold">{list?.examStatus}</td>
+                                    <td>{list?.date}</td>
+                                </tr>
+                            </tbody>)
+                        }
+
+                    </table>
+                        <div className="flex justify-center mt-4">
+                            <Pagination
+                                count={Math.ceil(examReports.length / itemsPerPage)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                color="primary"
+                            />
+                        </div>
+                    </div>) : reportValue === "failed" ? (<table className="w-full ">
                         <thead className="bg-gray-200">
                             <tr className="p-2">
                                 <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> SN</th>
@@ -239,9 +266,11 @@ export async function getServerSideProps(context) {
         }
     }
     const studentReport = await StudentAttendance.find({}).lean()
+    const result = await examResult.find({}).lean()
     return {
         props: {
-            studentReport: JSON.parse(JSON.stringify(studentReport))
+            studentReport: JSON.parse(JSON.stringify(studentReport)),
+            examResult: JSON.parse(JSON.stringify(result))
         }
     }
 }

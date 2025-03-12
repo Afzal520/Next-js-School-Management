@@ -22,6 +22,8 @@ export default function StudentEdit({ studentList }) {
     const [section, setSection] = useState("");
     const [religion, setReligion] = useState("");
     const [bloodGroup, setBloodGroup] = useState("");
+    const [fatherName,setfatherName] = useState("")
+    const [motherName,setmotherName] = useState("")
     const [isLoading, setLoading] = useState(true);
     const router = useRouter();
     const { id } = router.query;
@@ -31,6 +33,8 @@ export default function StudentEdit({ studentList }) {
         lastName,
         gender,
         dob,
+        fatherName,
+        motherName,
         email,
         roll,
         className,
@@ -80,6 +84,8 @@ export default function StudentEdit({ studentList }) {
             setSection(student.section);
             setReligion(student.religion);
             setBloodGroup(student.bloodGroup);
+            setfatherName(student.fatherName)
+            setmotherName(student.motherName)
         }
     }, [student]);
     console.log(student)
@@ -149,6 +155,10 @@ export default function StudentEdit({ studentList }) {
                                         <option value="OBC" className="text-gray-600">OBC</option>
                                     </select>
                                 </div>
+                                <div className="flex flex-col mt-8">
+                                    <label htmlFor="admissionId">motherName</label>
+                                    <input type="text" value={motherName} onChange={(e) => setmotherName(e.target.value)} className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Admission ID" />
+                                </div>
                             </div>
                             <div>
                                 <div className="flex flex-col">
@@ -160,13 +170,14 @@ export default function StudentEdit({ studentList }) {
                                     <input type="text" value={roll} onChange={(e) => setRoll(e.target.value)} className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Roll Number" />
                                 </div>
                                 <div className="flex flex-col mt-8">
+                                    <label htmlFor="roll" className="text-gray-600">FatherName</label>
+                                    <input type="text" value={fatherName} onChange={(e) => setfatherName(e.target.value)} className="p-2 px-4 border border-blue-400 rounded" placeholder="fatherName" />
+                                </div>
+                                <div className="flex flex-col mt-8">
                                     <label htmlFor="email" className="text-gray-600">E-mail</label>
                                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Email Address" />
                                 </div>
-                                <div className="flex flex-col mt-8">
-                                    <label htmlFor="admissionId">Admission ID</label>
-                                    <input type="text" value={admissionId} onChange={(e) => setAdmission(e.target.value)} className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Admission ID" />
-                                </div>
+                               
                             </div>
                             <div>
                                 <div className="flex flex-col">

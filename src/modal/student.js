@@ -19,13 +19,23 @@ const studentSchema = new mongoose.Schema({
         required: true
     },
     section: { type: String },
-    roll: { type: String, required: true },
+    roll: { type: String, },
     admissionId: { type: String },
     bloodGroup: { type: String },
+    fatherName: { type: String },
+    motherName: { type: String },
     className: { type: String },
-    image:{type:String}
+    image: { type: String }
 
 }, { timestamps: true })
+studentSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        const lastStudent = await Student.findOne().sort({ createdAt: -1 });
+        const lastRollNumber = lastStudent ? parseInt(lastStudent.roll, 10) : 0;
+        this.roll = (lastRollNumber + 1).toString().padStart(4, '0'); // Generate roll number with leading zeros
+    }
+    next();
+});
 
 
 const Student = mongoose.models.Student || mongoose.model("Student", studentSchema);

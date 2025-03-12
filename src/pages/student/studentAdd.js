@@ -10,10 +10,10 @@ export default function StudentAdd() {
     const [email, setEmail] = useState("")
     const [dob, setDob] = useState("")
     const [mobile, setMobile] = useState("")
-    const [roll, setRoll] = useState("")
+    const [fatherName, setfatherName] = useState("")
     const [gender, setGender] = useState("")
     const [className, setClassName] = useState("")
-    const [admissionId, setAdmission] = useState("")
+    const [motherName, setmotherName] = useState("")
     const [section, setSection] = useState("")
     const [religion, setReligion] = useState("")
     const [bloodGroup, setBloodGroup] = useState("")
@@ -26,9 +26,10 @@ export default function StudentAdd() {
         section,
         religion,
         bloodGroup,
-        admissionId,
+        fatherName,
+        motherName,
         email,
-        roll,
+
         dob,
         mobile,
         image
@@ -117,16 +118,16 @@ export default function StudentAdd() {
                                     <input onChange={(e) => setLastName(e.target.value)} required type="text" className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter First Name" />
                                 </div>
                                 <div className="flex flex-col mt-8">
-                                    <label htmlFor="first" className="text-gray-600">Roll</label>
-                                    <input type="text" onChange={(e) => setRoll(e.target.value)} required className="p-2 px-4 border border-blue-400  rounded" placeholder="Enter Roll Number" />
+                                    <label htmlFor="first" className="text-gray-600">Mother Name</label>
+                                    <input type="text" onChange={(e) => setmotherName(e.target.value)} required className="p-2 px-4 border border-blue-400  rounded" placeholder="Mother Name" />
                                 </div>
                                 <div className="flex flex-col mt-8">
                                     <label htmlFor="first" className="text-gray-600 ">E-mail</label>
                                     <input type="email" onChange={(e) => setEmail(e.target.value)} required className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Email Address" />
                                 </div>
                                 <div className="flex flex-col mt-8">
-                                    <label htmlFor="first">Admission ID</label>
-                                    <input type="text" onChange={(e) => setAdmission(e.target.value)} required className="p-2 px-4 border border-blue-400 rounded" placeholder="Enter Admission ID" />
+                                    <label htmlFor="first">father Name</label>
+                                    <input type="text" onChange={(e) => setfatherName(e.target.value)} required className="p-2 px-4 border border-blue-400 rounded" placeholder="Father Name" />
                                 </div>
 
                             </div>

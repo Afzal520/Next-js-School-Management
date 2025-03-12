@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     await connectToDB();
 
     if (req.method === "POST") {
-        const { studentId, fullName, status, date, gender, attendanceType } = req.body;
+        const { studentId, fullName, status, date, gender, attendanceType,motherName,fatherName,roll } = req.body;
 
         try {
             let existedData = await StudentAttendance.findOne({ studentId, date });
@@ -19,6 +19,9 @@ export default async function handler(req, res) {
                 const newAttendance = new StudentAttendance({
                     studentId,
                     fullName,
+                    fatherName,
+                    motherName,
+                    roll,
                     status,
                     date,
                     gender,
