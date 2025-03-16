@@ -13,7 +13,7 @@ import Pagination from "@mui/material/Pagination";
 import { downloadExcel } from "@/utils/downloadReport";
 
 export default function TeacherList({ teacher }) {
-    const itemsPerPage = 2; // Set items per page to a reasonable number
+    const itemsPerPage = 20; // Set items per page to a reasonable number
     const [teacherList, setTeacherList] = useState(teacher);
     const [searchQuery, setNameSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);

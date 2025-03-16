@@ -11,6 +11,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Loader from "@/components/loader/loader";
 
 export default function DetailsStudent() {
     const [student, setStudent] = useState(null)
@@ -26,7 +27,8 @@ export default function DetailsStudent() {
                     method: "GET",
                 });
                 const result = await response.json();
-                setStudent(result.StudentDetails)
+            //   console.log(result?.studentDetails?.fullName)
+                setStudent(result.studentDetails)
                 setLoading(false)
                 console.log(result);
             }
@@ -34,19 +36,21 @@ export default function DetailsStudent() {
         fetchData();
     }, [id]);
     if (isLoading) {
-        return <div>Loading studentDetails .......</div>
+        return <Loader/>
     }
 
     const handleDetail = () => {
         router.push(`/student/studentEdit?id=${id}`)
     }
+    console.log(student.image)
     return (
         <Layout>
             <div className="mt-[70px]">
-                <div className="bg-white shadow-lg h-52">
-                    <div>  <img alt="student bg" /></div>
+                <div className=" shadow-lg h-52">
+                  
                     <div className="flex justify-evenly items-end">
-                        <div className="h-32 w-32 bg-yellow-400 rounded-full"></div>
+                         <img src={student?.image} className="h-32 w-32  rounded-full"/> 
+                          {/* <img src={student?.image} className=" rounded-full" /> */}
                         <div className="">
                             <p className="font-bold">{student?.fullName}  {student?.lastName}</p>
                             <p className="text-gray-400">Computer Science</p>
@@ -165,9 +169,9 @@ export default function DetailsStudent() {
     )
 }
 
-export async function getServerSideProps(context){
+export async function getServerSideProps(context) {
 
-    return{
-        props:{}
+    return {
+        props: {}
     }
 }

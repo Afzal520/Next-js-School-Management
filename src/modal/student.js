@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema({
@@ -19,15 +18,17 @@ const studentSchema = new mongoose.Schema({
         required: true
     },
     section: { type: String },
-    roll: { type: String, },
+    roll: { type: String },
     admissionId: { type: String },
     bloodGroup: { type: String },
     fatherName: { type: String },
     motherName: { type: String },
     className: { type: String },
-    image: { type: String }
+    image: { type: String },
+   
 
-}, { timestamps: true })
+}, { timestamps: true });
+
 studentSchema.pre('save', async function (next) {
     if (this.isNew) {
         const lastStudent = await Student.findOne().sort({ createdAt: -1 });
@@ -36,7 +37,6 @@ studentSchema.pre('save', async function (next) {
     }
     next();
 });
-
 
 const Student = mongoose.models.Student || mongoose.model("Student", studentSchema);
 

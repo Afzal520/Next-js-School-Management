@@ -25,6 +25,7 @@ export default function ReportDetails() {
                 });
                 const result = await response.json();
                 setStudentDetails(result.existedData);
+                console.log(result.existedData)
                 setIsLoading(false);
             } catch (error) {
                 console.log("Internal server error");
@@ -37,7 +38,7 @@ export default function ReportDetails() {
                     method: "GET"
                 })
                 const result = await resopnse.json()
-                console.log(result?.isResult)
+                console.log(result)
                 setResultDetails(result?.isResult)
                 setIsLoading(false)
             } catch (error) {
@@ -51,8 +52,6 @@ export default function ReportDetails() {
             fetchResultData();
         }
     }, [id,setResultDetails]);
-
-
 
     const filterPresent = studentDetails.filter((list) => list.status === "Present");
     const filterAbsent = studentDetails.filter((list) => list.status === "Absent");

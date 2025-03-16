@@ -33,6 +33,10 @@ export default function TeacherTask() {
             const result = await response.json()
             if (result.success) {
                 toast.success(result.message)
+                setStartDate("")
+                setSubjectName('')
+                setTotalClass("")
+                setTotalUnit('')
             }
             else {
                 toast.error(result.message)

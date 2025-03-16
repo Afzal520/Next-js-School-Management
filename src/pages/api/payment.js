@@ -1,36 +1,46 @@
-import Razorpay from "razorpay";
-import connectToDB from "@/config/mongoose";
-import Payment from "@/modal/payment";
+import Stripe from "stripe";
+import dbConnect from "../../utils/dbConnect"; // MongoDB connection
+import Payment from "../../models/Payment"; // Payment model
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  await connectToDB();
-
   if (req.method === "POST") {
-    const { teacherId, amount } = req.body;
-
-    const options = {
-      amount: amount * 100,
-      currency: "INR",
-      receipt: `order_${Date.now()}`,
-    };
+    await dbConnect();
 
     try {
-      const order = await razorpay.orders.create(options);
+      const { studentId, totalFee, paidAmount } = req.body;
 
-      await Payment.create({
-        teacherId,
-        amount,
-        paymentStatus: "Pending",
+    
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: paidAmount * 100, 
+        currency: "usd",
+        payment_method_types: ["card"],
       });
 
-      res.status(200).json({ orderId: order.id, amount });
+      // Calculate remaining balance
+      const remainingAmount = totalFee - paidAmount;
+
+      // Save payment record in database
+      const newPayment = new Payment({
+        studentId,
+        totalFee,
+        paidAmount,
+        remainingAmount,
+        paymentStatus: remainingAmount > 0 ? "Partially Paid" : "Paid",
+      });
+
+      await newPayment.save();
+
+      res.status(200).json({
+        clientSecret: paymentIntent.client_secret,
+        message: "Payment record saved successfully!",
+      });
     } catch (error) {
-      res.status(500).json({ message: "Payment Error", error });
+      res.status(500).json({ error: error.message });
     }
+  } else {
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

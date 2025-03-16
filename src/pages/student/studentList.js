@@ -16,8 +16,9 @@ import { downloadExcel } from "@/utils/downloadReport";
 export default function StudentList({ student }) {
     const [studentList, setStudentList] = useState(student)
     const [searchQuery, setNameSearchQuery] = useState("")
-     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 20; // Set items per page to a reasonable number
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage,setItemPerPage] = useState(20)
+   
     const router = useRouter()
     const handleStudentDeatil = (id) => {
         router.push(`/student/studentDetails?id=${id}`)
@@ -42,9 +43,9 @@ export default function StudentList({ student }) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedData = studentFilter.slice(startIndex, endIndex);
-  const handleDownloadReport= ()=>{
-    downloadExcel(paginatedData)
-  }
+    const handleDownloadReport = () => {
+        downloadExcel(paginatedData)
+    }
     return (
         <Layout>
             <div className="mt-[70px]">
@@ -72,7 +73,7 @@ export default function StudentList({ student }) {
                     <div>
                         <div className="flex gap-6">  <p className="text-2xl cursor-pointer"><FaBarsStaggered /></p>
 
-                            <p  onClick={handleDownloadReport}  className="text-2xl cursor-pointer"><FaDownload /></p>
+                            <p onClick={handleDownloadReport} className="text-2xl cursor-pointer"><FaDownload /></p>
                             <p className="text-2xl cursor-pointer"><FaCirclePlus /></p>
                         </div>
                     </div>
@@ -83,20 +84,20 @@ export default function StudentList({ student }) {
                         <label>
                             show
                         </label>
-                        <select className="border p-2">
-                            <option>
+                        <select onChange={(e)=>setItemPerPage(e.target.value)} className="border  p-2">
+                            <option value={"20"}>
                                 20
                             </option>
-                            <option>
-                                40
+                            <option value={"30"}>
+                                30
                             </option>
-                            <option>
-                                60
+                            <option value={"50"}>
+                                50
                             </option>
-                            <option>
+                            <option value={"80"}>
                                 80
                             </option>
-                            <option>
+                            <option value={"100"}>
                                 100
                             </option>
                         </select>
@@ -106,8 +107,9 @@ export default function StudentList({ student }) {
                         <table className="border-2 w-full">
                             <thead className="bg-gray-200">
                                 <tr className="p-2">
-                                    <th><input type="checkbox" /></th>
-                                    <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> ID</th>
+                                    <th className="border p-2 text-center">SN:</th>
+                                    <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> Roll No</th>
+                                    <th className="border p-2 text-center"><FaArrowsUpDown className="inline" /> Profile</th>
                                     <th className="border p-2"> <FaArrowsUpDown className="inline" /> NAME</th>
                                     <th className="border p-2"> <FaArrowsUpDown className="inline" />CLASS</th>
                                     <th className="border p-2"> <FaArrowsUpDown className="inline" />Father Name</th>
@@ -116,18 +118,19 @@ export default function StudentList({ student }) {
                                 </tr>
                             </thead>
                             <tbody className="w-full text-center border">
-                                {paginatedData?.map((list) => {
+                                {paginatedData?.map((list, i) => {
                                     return (
                                         <tr onClick={() => handleStudentDeatil(list._id)} className="w-full  cursor-pointer">
-                                            <td>
-                                                <input type="checkbox" />
+                                            <td className="border font-semibold ">
+                                                {startIndex + i + 1}
                                             </td>
-                                            <td className="">{list?.roll}</td>
-                                            <td className="">
-                                                <div className=" box-border flex gap-1 justify-evenly items-center">
-                                                    <p className="w-10 h-10 bg-yellow-400 rounded-full"></p>
-                                                    <p>{list?.fullName}</p>
-                                                </div>
+                                            <td className="border">{list?.roll}</td>
+                                            <td className="border text-center">  <img src={list?.image} className="w-10 h-10 inline  bg-yellow-400 rounded-full" /></td>
+                                            <td className="border">
+
+
+                                                <p>{list?.fullName}</p>
+
 
                                             </td>
                                             <td className="border">{list?.className}</td>

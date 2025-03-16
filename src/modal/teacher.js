@@ -19,7 +19,8 @@ const teacherSchema = new mongoose.Schema({
         ref: "Authenication",
         required: true,
     },
-    joiningDate: { type: String, requirde: true }
+    joiningDate: { type: String, requirde: true },
+    image:{type:String}
 
 
 })

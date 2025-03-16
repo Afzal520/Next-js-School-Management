@@ -1,15 +1,37 @@
 import connectToDB from "@/config/mongoose"
 import Authenication from "@/modal/authenication"
 import Teacher from "@/modal/teacher"
+import cloudinary from "@/config/cloudinary"
+import uploadwhen from "@/config/multer"
+export const config = {
+    api: {
+        bodyParser: false, // Required for handling file uploads
+    },
+};
+
+// Function to handle file uploads
+const uploadMiddleware = (req, res) => {
+    return new Promise((resolve, reject) => {
+        upload.single("profile")(req, res, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
 
 export default async function handler(req, res) {
+
     await connectToDB()
     if (req.method === "POST") {
+        await uploadMiddleware(req, res);
         try {
             const { fullName, gender, joiningDate, email, dob, mobile, experience, qualification } = req.body
-            const auth= await Authenication.findOne({email})
-            if(!auth){
-                return res.status(404).json({success:false,message:"Login Email Not Match"})
+            const auth = await Authenication.findOne({ email })
+            if (!auth) {
+                return res.status(404).json({ success: false, message: "Login Email Not Match" })
             }
             const existedTeacher = await Teacher.findOne({ email })
             if (existedTeacher) {
@@ -24,8 +46,19 @@ export default async function handler(req, res) {
                 joiningDate,
                 qualification,
                 gender,
-                teacherId:auth._id
+                teacherId: auth._id
             })
+            if (req.file) {
+                try {
+                    const result = await cloudinary.uploader.upload(req.file.path, {
+                        folder: "profile_photos",
+                    });
+                    newTeacher.image = result.secure_url;
+                } catch (cloudinaryError) {
+                    console.error("Cloudinary upload error:", cloudinaryError);
+                    return res.status(500).json({ success: false, message: "Cloudinary upload failed", error: cloudinaryError.message });
+                }
+            }
             await newTeacher.save()
 
             res.status(201).json({ success: true, message: "Teacher Register Successfully" })
