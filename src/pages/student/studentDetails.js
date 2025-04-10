@@ -42,7 +42,7 @@ export default function DetailsStudent() {
     }
     return (
         <Layout>
-            <div className="mt-[70px]">
+            <div className="lg:mt-[70px]">
                 <div className="bg-white shadow-lg h-52">
                     <div>  <img alt="student bg" /></div>
                     <div className="flex justify-evenly items-end">

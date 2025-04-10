@@ -4,7 +4,7 @@ import Layout from "../dashboard/layout";
 export default function Semsester() {
     return (
         <Layout >
-            <div className="mt-[70px]">
+            <div className="lg:mt-[70px]">
                 <p>Student List</p>
             </div>
         </Layout>

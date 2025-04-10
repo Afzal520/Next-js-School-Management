@@ -7,30 +7,31 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
+import {useGetDetailsQuery} from "@/querySlice"
 
 export default function DetailTeacher() {
     const [teacher, setTeacher] = useState(null)
-    const [isLoading, setLoading] = useState(true)
+    const [isloading, setLoading] = useState(true)
     const [toggleLogin ,setToggleLogin] = useState(false)
 
     const router = useRouter()
     const { id } = router.query
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (id) {
-                const response = await fetch(`/api/teacherRegister?id=${id}`, {
-                    method: "GET",
-                });
-                const result = await response.json();
-                setTeacher(result.teacherDetails)
-                setLoading(false)
-                console.log(result);
-            }
-        };
-        fetchData();
-    }, [id]);
+   const {isSuccess ,data,isError ,isFetching,isLoading,refetch} = useGetDetailsQuery(id)
+    // console.log(data)
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         if (id) {
+    //             const response = await fetch(`/api/teacherRegister?id=${id}`, {
+    //                 method: "GET",
+    //             });
+    //             const result = await response.json();
+    //             setTeacher(result.teacherDetails)
+    //             setLoading(false)
+    //             console.log(result);
+    //         }
+    //     };
+    //     fetchData();
+    // }, [id]);
     if (isLoading) {
         return <div>Loading studentDetails .......</div>
     }
@@ -40,12 +41,12 @@ export default function DetailTeacher() {
     }
     return (
         <Layout>
-            <div className="bg-white shadow-lg h-52 mt-[70px]">
+            <div className="bg-white shadow-lg h-52 lg:mt-[70px]">
                 <div>  <img alt="student bg" /></div>
                 <div className="flex justify-evenly items-end">
                     <div className="h-32 w-32 bg-yellow-400 rounded-full"></div>
                     <div className="">
-                        <p className="font-bold">{teacher?.fullName}</p>
+                        <p className="font-bold">{data?.teacherDetails?.fullName}</p>
                         <p className="text-gray-400">Computer Science</p>
                     </div>
 
@@ -73,7 +74,7 @@ export default function DetailTeacher() {
                                 <p className="text-blue-400"><IoPeopleSharp /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Name</p>
-                                    <p className="block text-gray-400">{teacher?.fullName} </p>
+                                    <p className="block text-gray-400">{data?.teacherDetails?.fullName} </p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
@@ -94,14 +95,14 @@ export default function DetailTeacher() {
                                 <p className="text-blue-400"><FaPhoneAlt /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Mobile</p>
-                                    <p className="block text-gray-400">{teacher?.mobile}</p>
+                                    <p className="block text-gray-400">{data?.teacherDetails?.mobile}</p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
                                 <p className="text-blue-400"><MdOutlineMail /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">E-mail</p>
-                                    <p className="block text-blue-500">{teacher?.email}</p>
+                                    <p className="block text-blue-500">{data?.teacherDetails?.email}</p>
                                 </div>
                             </div>
 
@@ -110,14 +111,14 @@ export default function DetailTeacher() {
                                 <p className="text-blue-400">  <IoPeopleSharp /> </p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Gender</p>
-                                    <p className="block text-gray-400">{teacher?.gender}</p>
+                                    <p className="block text-gray-400">{data?.teacherDetails?.gender}</p>
                                 </div>
                             </div>
                             <div className="flex gap-2 md-2">
                                 <p className="text-bule-400"><MdDateRange /></p>
                                 <div className="flex  flex-col">
                                     <p className="font-bold ">Date of Birth</p>
-                                    <p className="block text-gray-400">{teacher?.dob}</p>
+                                    <p className="block text-gray-400">{data?.teacherDetails?.dob}</p>
                                 </div>
                             </div>
 
@@ -132,7 +133,7 @@ export default function DetailTeacher() {
                     <div className="p-4 flex flex-col">
                         <p>About Me</p>
                         <div>
-                            <h2 className="font-bold ">Hello I , {teacher?.fullName}</h2>
+                            <h2 className="font-bold ">Hello I , {data?.teacherDetails?.fullName}</h2>
                             <p className="text-gray-400">
                                 lorem lorem   lorem lorem Layout jnhdwhuhACBIYET7 HSGDXBYT ABXFD ZFSRu6r jazbu6trtu
                                 lorem lorem   lorem lorem Layout jnhdwhuhACBIYET7 HSGDXBYT ABXFD ZFSRu6r jazbu6trtu

@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
 
 const PaymentSchema = new mongoose.Schema({
-    teacherId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Authenication",
-        required: true,
-    },
-    amount: { type: Number, required: true },
-    paymentStatus: { type: String, enum: ["Pending", "Paid"], default: "Pending" },
-    paymentDate: { type: Date, default: Date.now },
-});
+  studentId: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true },
+  totalFee: { type: Number,  }, // e.g., 25000
+  paidAmount: { type: Number, }, // e.g., 20000
+  remainingAmount: { type: Number, }, // e.g., 5000
+  paymentStatus: { type: String, enum: ["Pending", "Partially Paid", "Paid"], default: "Pending" },
+  paymentDate: { type: Date, default: Date.now },
+  paymentIntentId:{type:String}
 
-const Payment = mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);
-export default Payment
+},{timestamps:true});
+
+export default mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);

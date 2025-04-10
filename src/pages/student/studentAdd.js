@@ -59,7 +59,7 @@ export default function StudentAdd() {
     return (
 
         <Layout>
-            <div className="mt-[70px]">
+            <div className="lg:mt-[70px]">
                 <h1>Add Student</h1>
                 <div className=" bg-white shadow h-screen p-6">
                     <h2 className="font-bold text-2xl">Student Information</h2>

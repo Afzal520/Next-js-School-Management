@@ -47,21 +47,19 @@ export default function StudentList({ student }) {
   }
     return (
         <Layout>
-            <div className="mt-[70px]">
+            <div className="lg:mt-[70px]">
                 <div className="flex justify-between">
                     <p>Student </p>
                     <p>Home / Student </p>
                 </div>
-                <div className="grid grid-cols-7 mt-2 justify-between">
+                <div className="flex gap-2 mt-2 justify-between">
                     <div className="col-span-2">
                         <input onChange={(e) => setNameSearchQuery(e.target.value)} type="text" className="p-2 px-4 border border-blue-500 rounded" placeholder="Search by Name" />
                     </div>
                     <div className="col-span-2">
                         <input type="text" className="p-2 px-4 border border-blue-500 rounded" placeholder="Search by Id" />
                     </div>
-                    <div className="col-span-2">
-                        <input type="text" className="p-2 px-4 border border-blue-500 rounded" placeholder="Search by Phone" />
-                    </div>
+                  
                     <div className="col-span-1">
                         <button className=" px-7 p-2 rounded bg-blue-700 text-white font-bold">Search</button>
                     </div>

@@ -1,4 +1,5 @@
 
+import { useEditDetailsMutation, useGetDetailsQuery } from "@/querySlice";
 import Layout from "../dashboard/layout";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router"
@@ -7,7 +8,7 @@ import { toast } from "react-toastify";
 
 
 export default function EditTeacher() {
-    const [teacher, setTeacher] = useState(null)
+    // const [teacher, setTeacher] = useState(null)
     const [fullName, setFullName] = useState("")
     const [teacherId, setTeacherId] = useState("")
     const [email, setEmail] = useState("")
@@ -18,39 +19,45 @@ export default function EditTeacher() {
     const [qualification, setQualification] = useState("")
     const [gender, setGender] = useState("")
     const [JoiningDate, setJoining] = useState("")
-    const [isLoading, setLoading] = useState(true)
+    // const [isLoading, setLoading] = useState(true)
     const router = useRouter()
-    const { id } = router.query
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`/api/teacherRegister?id=${id}`, {
-                method: "GET"
-            })
-            const result = await response.json()
-            setLoading(false)
+    const { id } = router.query 
+    const {data:teacher ,isError, isFetching,isSuccess,refetch ,isLoading} = useGetDetailsQuery(id)
+    const [editDetails] = useEditDetailsMutation()
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = await fetch(`/api/teacherRegister?id=${id}`, {
+    //             method: "GET"
+    //         })
+    //         const result = await response.json()
+    //         // setLoading(false)
 
 
-        }
-        fetchData()
-    }, [id])
-
-    console.log(teacher)
-    useEffect(() => {
+    //     }
+    //     fetchData()
+    // }, [id])
+        useEffect(() => {
         if (teacher) {
-            setFullName(teacher.fullName)
-            setExperience(teacher.experience)
-            setDob(teacher.dob)
-            setGender(teacher.gender)
-            setJoining(teacher.JoiningDate || null)
-            setTeacherId(teacher.teacherId)
-            setMobile(teacher.mobile)
-            setEmail(teacher.email)
-            setQualification(teacher.qualification)
+            setFullName(teacher.teacherDetails.fullName)
+            setExperience(teacher.teacherDetails.experience)
+            setDob(teacher.teacherDetails.dob)
+            setGender(teacher.teacherDetails.gender)
+            setJoining(teacher.teacherDetails.JoiningDate || null)
+            setTeacherId(teacher.teacherDetails.teacherId)
+            setMobile(teacher.teacherDetails.mobile)
+            setEmail(teacher.teacherDetails.email)
+            setQualification(teacher.teacherDetails.qualification)
         }
     }, [teacher])
+    if (isLoading) {
+        return <div>Loading teacher details...</div>;
+    }
+    console.log(teacher.teacherDetails.fullName)
+  
+   
     const handleSubmit = async (e) => {
         e.preventDefault(e)
-        console.log("register")
+     
         const formData = {
             fullName,
             experience,
@@ -64,21 +71,21 @@ export default function EditTeacher() {
 
         }
         try {
-            const response = await fetch(`/api/teacherRegister?id=${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-            const result = await response.json()
-            if (result.success) {
-                toast.success(result.message)
-                setLoading(false)
-            }
-            else {
-                toast.error(result.message)
-            }
+           await  editDetails({id, data:formData})
+           refetch()
+            // const response = await fetch(`/api/teacherRegister?id=${id}`, {
+            //     method: "PUT",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(formData)
+            // })
+            // const result = await response.json()
+            // if (result.success) {
+            //     toast.success(result.message)
+            //     setLoading(false)
+            // }
+           
         } catch (error) {
             toast.error(error)
         }
@@ -89,7 +96,7 @@ export default function EditTeacher() {
     return (
         <Layout>
            
-            <div className=" mt-[70px] bg-white shadow h-auto p-6">
+            <div className=" lg:mt-[70px] bg-white shadow h-auto p-6">
             <h1>Edit Teacher</h1>
                 <h2 className="font-bold text-2xl">Teacher Information Update</h2>
                 <form onSubmit={handleSubmit}>

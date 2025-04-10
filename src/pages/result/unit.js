@@ -47,7 +47,7 @@ export default function StudentList({ student }) {
   }
   return (
     <Layout>
-      <div className="mt-[70px]">
+      <div className="lg:mt-[70px]">
         <div className="flex justify-between">
           <p className="text-2xl font-bold">Add Unit Result  </p>
           <p>Home / Student </p>
