@@ -110,7 +110,7 @@ export default function ResultDetails() {
     }
     return (
         <Layout>
-            <div className="mt-[70px] bg-white p-6 rounded-lg shadow-lg">
+            <div className="lg:mt-[70px] bg-white p-6 rounded-lg shadow-lg">
                 <div className="mb-6">
                     <div>
                         <h1 className="text-center font-bold text-2xl mb-1">UNIVERSITY OF LUCKNOW</h1>

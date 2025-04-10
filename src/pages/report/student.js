@@ -57,13 +57,14 @@ export default function StudentReport({ studentReport, examResult }) {
 
     return (
         <Layout>
-            <div>
-                <div className="flex justify-between mt-[70px]">
-                    <h1 className="text-center font-bold text-2xl">Students Reports</h1>
+            <div className=" lg:mt-[70px] ">
+            <h1 className=" font-bold text-2xl">Students Reports</h1>
+                <div className="flex justify-between">
+                  
                     <div>
                         <input onChange={(e) => setSearchQuery(e.target.value)} type="search" className="p-2 px-4 border border-gray-500 outline-none rounded" placeholder={reportValue == "Daily" ? "Search By Name" : "Search Pass Student"} />
                     </div>
-                    <select onChange={(e) => setReportValue(e.target.value)} className="border rounded border-black p-2 px-4">
+                    <select onChange={(e) => setReportValue(e.target.value)} className="border rounded border-black ">
                         <option selected value={"Daily"}>
                             Daily Attendance
                         </option>
@@ -95,29 +96,29 @@ export default function StudentReport({ studentReport, examResult }) {
 
                 <div className="mt-4">
                     {reportValue === "Daily" ? (<div className="" {...swipeHandlers}>
-                        <table className="w-full ">
+                        <table className="w-full border-2 border-black ">
 
-                            <thead className="bg-gray-200">
-                                <tr className="p-2">
-                                    <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> SN</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Photo</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Name</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Father Name</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Status</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Date</th>
-                                    <th className="border p-2"> <FaArrowsUpDown className="inline" /> Phone</th>
+                            <thead className="bg-gray-200 border-2 border-black">
+                                <tr className="p-2 boder-2 border-black">
+                                    <th className="border p-1 text-center"> <FaArrowsUpDown className="inline" /> SN</th>
+                                    <th className="border p-1"> <FaArrowsUpDown className="inline" /> Photo</th>
+                                    <th className="border "> <FaArrowsUpDown className="inline" /> Name</th>
+                                    <th className="border p-1"> <FaArrowsUpDown className="inline" /> Father Name</th>
+                                    <th className="border p-1"> <FaArrowsUpDown className="inline" /> Status</th>
+                                    <th className="border p-1"> <FaArrowsUpDown className="inline" /> Date</th>
+                                    <th className="border p-1"> <FaArrowsUpDown className="inline" /> Phone</th>
                                 </tr>
                             </thead>
 
-                            {paginatedData.map((student, i) => <tbody className="bg-white">
-                                <tr onClick={() => router.push(`/report/${student.studentId}`)} key={student._id} className="text-center cursor-pointer border">
-                                    <td className="p-3">{startIndex + i + 1}</td>
-                                    <td className="p-3">Photo</td>
-                                    <td>{student.fullName}</td>
-                                    <td>{student.fatherName}</td>
-                                    <td className="text-green-700 font-semibold">{student.status}</td>
-                                    <td>{student.date}</td>
-                                    <td>{student.moble}</td>
+                            {paginatedData.map((student, i) => <tbody className="bg-white border">
+                                <tr  onClick={() => router.push(`/report/${student.studentId}`)} key={student._id} className="text-center cursor-pointer border">
+                                    <td className="p-1 border">{startIndex + i + 1}</td>
+                                    <td className="p-1 border">Photo</td>
+                                    <td className="border px-1">{student.fullName}</td>
+                                    <td className="border px-1">{student.fatherName}</td>
+                                    <td className="text-green-700 px-1 borderfont-semibold">{student.status}</td>
+                                    <td className="border px-1">{student.date}</td>
+                                    <td className="border px-1">{student.moble}</td>
                                 </tr>
                             </tbody>)}
                         </table>
@@ -129,26 +130,26 @@ export default function StudentReport({ studentReport, examResult }) {
                                 color="primary"
                             />
                         </div>
-                    </div>) : reportValue === "Test" ? (<table className="w-full ">
-                        <thead className="bg-gray-200">
-                            <tr className="p-2">
-                                <th className="border p-2 text-center"> <FaArrowsUpDown className="inline" /> SN</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Photo</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Name</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Father Name</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Status</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Date</th>
-                                <th className="border p-2"> <FaArrowsUpDown className="inline" /> Phone</th>
+                    </div>) : reportValue === "Test" ? (<table className="w-full border-2 border-black ">
+                        <thead className=" border-black bg-gray-300 ">
+                            <tr className="p-2 border-2 border-black">
+                                <th className="border  text-center"> <FaArrowsUpDown className="inline" /> SN</th>
+                                <th className="border border-black text-center "> <FaArrowsUpDown className="inline" /> Photo</th>
+                                <th className="border border-black text-center "> <FaArrowsUpDown className="inline" /> Name</th>
+                                <th className="border px-2 border-black text-center "> <FaArrowsUpDown className="inline" /> Name</th>
+                                <th className="border border-black text-center "> <FaArrowsUpDown className="inline" /> Status</th>
+                                <th className="border border-black text-center "> <FaArrowsUpDown className="inline" /> Date</th>
+                                <th className="border border-black text-center "> <FaArrowsUpDown className="inline" /> Phone</th>
                             </tr>
                         </thead>
                         {filterPresent.map((student, i) => <tbody>
-                            <tr key={student._id} className="text-center border">
-                                <td className="p-3">{i + 1}</td>
-                                <td className="p-3">Photo</td>
-                                <td>{student.fullName}</td>
-                                <td>{"father Name"}</td>
-                                <td className="text-green-700 font-semibold">{student.status}</td>
-                                <td>{"mobile Number"}</td>
+                            <tr key={student._id} className="text-center border-black">
+                                <td className="px-1 border border-black">{i + 1}</td>
+                                <td className=" px-2 border border-black">Photo</td>
+                                <td className="border border-black">{student.fullName}</td>
+                                <td className="border px-1 border-black">{"father Name"}</td>
+                                <td className="px-1 text-green-700 border border-black font-semibold">{student.status}</td>
+                                <td className="border  border-black">{" Number"}</td>
                             </tr>
                         </tbody>)}
                     </table>) : reportValue === "Practical" ? (<table className="w-full ">

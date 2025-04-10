@@ -82,7 +82,7 @@ export default function ReportDetails() {
     }
     return (
         <Layout>
-            <div className="bg-slate-100 mt-[70px]">
+            <div className="bg-slate-100 lg:mt-[70px]">
                 <div className="flex  flex-col justify-center items-center">
                     <div className="bg-yellow-500 rounded-full h-32 w-32"></div>
                     <div className="flex mt-2 gap-3">

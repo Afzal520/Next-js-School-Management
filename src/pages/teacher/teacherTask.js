@@ -43,7 +43,7 @@ export default function TeacherTask() {
     }
     return (
         <Layout>
-            <div className="mt-[70px]">
+            <div className="lg:mt-[70px]">
                 <h1>Add Teacher</h1>
                 <div className=" bg-white shadow h-auto p-6">
 

@@ -53,6 +53,7 @@ export default async function handler(req, res) {
     }
     else if (req.method === "PUT") {
         const { id } = req.query
+        console.log(id,"teacher id here")
         const { fullName,
             email,
             dob,
@@ -81,11 +82,13 @@ export default async function handler(req, res) {
                 gender,
                 teacherId
             }
-            const existedTeacher = await Teacher.findById(id)
+            const existedTeacher = await Teacher.findOne({teacherId:id})
+            console.log(existedTeacher)
+            console.log(existedTeacher._id)
             if (!existedTeacher) {
                 return res.status(404).json({ success: false, message: "Teacher detail not found" })
             }
-            const updateTeacherDetails = await Teacher.findByIdAndUpdate(existedTeacher._id, updateData)
+            const updateTeacherDetails = await Teacher.findByIdAndUpdate(existedTeacher._id, updateData,{new:true})
             res.status(200).json({ success: true, message: "Teacher Details SuccessFully", updateTeacherDetails })
 
         } catch (error) {

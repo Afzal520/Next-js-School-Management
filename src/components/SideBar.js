@@ -14,7 +14,7 @@ export const Sidebar = ({ session }) => {
 
     return (
         <div>
-            <div className={`h-screen sticky top-0 bg-white shadow-lg ${isOpen ? 'w-56' : 'w-20'} transition-all duration-300`}>
+            <div className={`h-screen sticky top-0 lg:bg-white lg:shadow-lg ${isOpen ? 'w-56' : 'w-18'} transition-all duration-300`}>
                 <div className="p-4 flex items-center justify-between border-b">
                     <h1 className={`text-lg p-2 font-bold transition-all ${isOpen ? 'block' : 'hidden'}`}>SCHOOL</h1>
                     <FaBars className="cursor-pointer" onClick={() => setIsOpen(!isOpen)} />
@@ -77,7 +77,7 @@ export const Sidebar = ({ session }) => {
                         <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">
                             <FaBook className="mr-3" /> {isOpen && <span>Subjects</span>}
                         </li>
-                        <Link href={"/payment"} className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+                        <Link href={"/payments"} className="flex items-center p-2 rounded-lg hover:bg-gray-200">
                             <FaFileInvoice className="mr-3" /> {isOpen && <span>Fee</span>}
                         </Link>
                         <li className="flex items-center p-2 rounded-lg hover:bg-gray-200">

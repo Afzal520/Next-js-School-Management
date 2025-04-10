@@ -8,7 +8,7 @@ export default function Profile() {
     console.log(session)
     const router = useRouter()
     return (
-        <div className="fixed top-0 left-56 mb-14 w-[calc(100%-14rem)]    bg-white border-b z-50">
+        <div className="hidden lg:block fixed top-0 left-56 mb-14 w-[calc(100%-14rem)]    bg-white border-b z-50">
             <div className="flex justify-between items-center p-3">
                 <div>
                     <input type="search" placeholder="Search" className="border p-2 px-4 rounded" />
